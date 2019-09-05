@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class PuzzleMovement : MonoBehaviour
 {
-    private int puzzleNumber;
+    private int puzzlePlacementNumber;
+    public int puzzleNumber;
     private Transform parentPanel;
     // Start is called before the first frame update
     void Start()
     {
         parentPanel = transform.parent;
-        GetComponent<Button>().onClick.AddListener(MovePuzzle);
+        if (transform.name != "Blank")
+        {
+            GetComponent<Button>().onClick.AddListener(MovePuzzle);
+        }
     }
 
     // Update is called once per frame
@@ -19,34 +23,59 @@ public class PuzzleMovement : MonoBehaviour
     {
         
     }
+    
     public void MovePuzzle()
     {
-        puzzleNumber = transform.GetSiblingIndex();
+        puzzlePlacementNumber = transform.GetSiblingIndex();
 
-        if (puzzleNumber > 0 && parentPanel.GetChild(puzzleNumber - 1).name == "Blank") //Before
+        if (puzzlePlacementNumber > 0 && parentPanel.GetChild(puzzlePlacementNumber - 1).name == "Blank") //Before
         {
-              transform.SetSiblingIndex(puzzleNumber - 1);
+              transform.SetSiblingIndex(puzzlePlacementNumber - 1);
+            CheckIfOver();
         }
 
-        else if (puzzleNumber + 1 < parentPanel.childCount && parentPanel.GetChild(puzzleNumber + 1).name == "Blank") //After
+        else if (puzzlePlacementNumber + 1 < parentPanel.childCount && parentPanel.GetChild(puzzlePlacementNumber + 1).name == "Blank") //After
         {
-            transform.SetSiblingIndex(puzzleNumber + 1);
+            transform.SetSiblingIndex(puzzlePlacementNumber + 1);
+            CheckIfOver();
         }
 
-        else if (puzzleNumber + 8 < parentPanel.childCount && parentPanel.GetChild(puzzleNumber + 8).name == "Blank" ) //Below
+        else if (puzzlePlacementNumber + 8 < parentPanel.childCount && parentPanel.GetChild(puzzlePlacementNumber + 8).name == "Blank" ) //Below
         {
-            transform.SetSiblingIndex(puzzleNumber + 8);
-            parentPanel.GetChild(puzzleNumber + 7).SetSiblingIndex(puzzleNumber);
+            transform.SetSiblingIndex(puzzlePlacementNumber + 8);
+            parentPanel.GetChild(puzzlePlacementNumber + 7).SetSiblingIndex(puzzlePlacementNumber);
+            CheckIfOver();
         }
-        else if (puzzleNumber - 8 < parentPanel.childCount && parentPanel.GetChild(puzzleNumber - 8).name == "Blank") //Above
+        else if (puzzlePlacementNumber - 8 < parentPanel.childCount && parentPanel.GetChild(puzzlePlacementNumber - 8).name == "Blank") //Above
         {
-            transform.SetSiblingIndex(puzzleNumber - 7);
-            parentPanel.GetChild(puzzleNumber - 8).SetSiblingIndex(puzzleNumber);
+            transform.SetSiblingIndex(puzzlePlacementNumber - 7);
+            parentPanel.GetChild(puzzlePlacementNumber - 8).SetSiblingIndex(puzzlePlacementNumber);
+            CheckIfOver();
         }
         else
         {
-            Debug.Log("Index Out of Bounds");
+            Debug.Log("Bad movement!");
         }
-       
+    }
+    public void CheckIfOver()
+    {
+
+        for(int i = 0; i < parentPanel.childCount; i++)
+        {
+            Debug.Log(parentPanel.GetChild(i).name);
+            if(parentPanel.GetChild(i).name == "Blank" || parentPanel.GetChild(i).GetComponent<PuzzleMovement>().puzzleNumber == i)
+            {
+                if((parentPanel.GetChild(i).GetComponent<PuzzleMovement>().puzzleNumber == 31 && i == 31) || (parentPanel.GetChild(i).name == "Blank" && i == 31))
+                {
+                    Debug.Log("You win!");
+                }
+            }
+            else
+            {
+                Debug.Log("Not yet!");
+                break;
+            }
+
+        }
     }
 }

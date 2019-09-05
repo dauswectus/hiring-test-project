@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
     void Start ()
     {
+        transform.GetChild(0).GetComponent<Text>().text = transform.name;
         switch (transform.name)
         {
-            case "Start":
+            case "Restart":
                 GetComponent<Button>().onClick.AddListener(StartGame);
-                break;
-            case "Options":
-                GetComponent<Button>().onClick.AddListener(SetOptions);
                 break;
             case "Exit":
                 GetComponent<Button>().onClick.AddListener(ExitGame);
@@ -25,15 +24,11 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void StartGame()
     {
-        Debug.Log("1");
-    }
-    void SetOptions()
-    {
-        Debug.Log("2");
+        SceneManager.LoadScene("GameScene");
     }
     void ExitGame()
     {
-        Debug.Log("3");
+        Application.Quit();
     }
 
 }
