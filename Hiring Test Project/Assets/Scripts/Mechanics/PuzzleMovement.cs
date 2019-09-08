@@ -18,12 +18,6 @@ public class PuzzleMovement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     public void MovePuzzle()
     {
         puzzlePlacementNumber = transform.GetSiblingIndex();
@@ -46,7 +40,7 @@ public class PuzzleMovement : MonoBehaviour
             parentPanel.GetChild(puzzlePlacementNumber + 7).SetSiblingIndex(puzzlePlacementNumber);
             CheckIfOver();
         }
-        else if (puzzlePlacementNumber - 8 < parentPanel.childCount && parentPanel.GetChild(puzzlePlacementNumber - 8).name == "Blank") //Above
+        else if (puzzlePlacementNumber - 8 > 0 && parentPanel.GetChild(puzzlePlacementNumber - 8).name == "Blank") //Above
         {
             transform.SetSiblingIndex(puzzlePlacementNumber - 7);
             parentPanel.GetChild(puzzlePlacementNumber - 8).SetSiblingIndex(puzzlePlacementNumber);
@@ -54,6 +48,7 @@ public class PuzzleMovement : MonoBehaviour
         }
         else
         {
+            GetComponent<AudioSource>().Play(0);
             Debug.Log("Bad movement!");
         }
     }
@@ -68,6 +63,7 @@ public class PuzzleMovement : MonoBehaviour
                 if((parentPanel.GetChild(i).GetComponent<PuzzleMovement>().puzzleNumber == 31 && i == 31) || (parentPanel.GetChild(i).name == "Blank" && i == 31))
                 {
                     Debug.Log("You win!");
+                    GameObject.Find("MainBoardCanvas").GetComponent<Animator>().SetBool("isGameEnded", true);
                 }
             }
             else

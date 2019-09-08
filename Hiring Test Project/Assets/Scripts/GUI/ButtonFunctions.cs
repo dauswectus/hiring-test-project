@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
-    void Start ()
+    void Start()
     {
         transform.GetChild(0).GetComponent<Text>().text = transform.name;
         switch (transform.name)
@@ -30,5 +30,4 @@ public class ButtonFunctions : MonoBehaviour
     {
         Application.Quit();
     }
-
 }

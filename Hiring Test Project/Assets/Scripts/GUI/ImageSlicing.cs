@@ -9,7 +9,8 @@ public class ImageSlicing : MonoBehaviour
     public GameObject puzzlePiecePrefab;
     private int puzzleNumber;
     private Sprite mySprite;
-    List<GameObject> PuzzlePieces = new List<GameObject>();
+    public bool debugMode;
+    public List<GameObject> PuzzlePieces = new List<GameObject>();
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class ImageSlicing : MonoBehaviour
             PuzzlePieces.RemoveAt(rnd);
             Debug.Log(PuzzlePieces.Count);
         }
+        Debug.Log(PuzzlePieces[0].name);
         GameObject BlankPiece = (GameObject)Instantiate(puzzlePiecePrefab, parentPanel);
         BlankPiece.transform.localScale = Vector3.one;
         BlankPiece.AddComponent<PuzzleMovement>();
@@ -46,9 +48,8 @@ public class ImageSlicing : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void SliceImage()
     {
-        
+
     }
 }
